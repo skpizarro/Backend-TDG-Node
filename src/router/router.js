@@ -1,7 +1,23 @@
 "use strict";
-const express = require('express');
-const router = express.Router();
 
+const express = require('express');
+const qr = require('qr-image');
+const router = express.Router();
+var fs = require('fs');
+
+/*
+var qr_png = qr.image('I love QR!', { type: 'svg' });
+qr_png.pipe(require('fs').createWriteStream('i_love_qr.svg'));
+
+var svg_string = qr.imageSync('I love QR!', { type: 'svg' });
+----------------------------------
+
+var code = qr.image('http://blog.nodejitsu.com', { type: 'svg' });  
+var output = fs.createWriteStream('nodejitsu.svg')
+
+code.pipe(output);  
+
+*/
 router.use(express.urlencoded());
 router.use(express.json());
 
@@ -14,8 +30,8 @@ router.get('/api/generateqr', (req, res) => {
     let body = req.body;
     let sendMail = req.query.correo || false;
     sendMail = Boolean(sendMail);
-    
-    if(sendMail){
+
+    if (sendMail) {
         //MyMethods.sendMailTo(req.body.email, qrimage)
     }
 
@@ -69,6 +85,11 @@ router.post('/api/users', (req, res) => {
     // var data = req.body;
     var data = JSON.stringify(req.body);
     console.log(`The data extract is: ${data} `);
+
+    var code = qr.image(data, { type: 'png' });
+    var output = fs.createWriteStream('../src/img/qrtest.png')
+
+    code.pipe(output);
 
     res.status(200).json({
         ok: true,
