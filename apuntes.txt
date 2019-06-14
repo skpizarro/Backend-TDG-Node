@@ -1,5 +1,9 @@
 JSON PRUEBA api/users { "name": "Cristian", "city": "Medallo", "telephone": "5555555555" }
 
+FRONT
+npm update
+npm start
+
 router.js
 		router.get('/api/generateqr', (req, res) => {
 			//recibo query params $correo=true || $correo=false
