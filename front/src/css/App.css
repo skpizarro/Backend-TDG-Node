@@ -1,0 +1,15 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    background: whitesmoke;
+    
+}
+
+.App{
+    background: rgb(0, 146, 64);
+}

@@ -1,0 +1,210 @@
+.formulario{
+    margin: 20px;
+    padding: 10px 0 20px;
+}
+
+.contenedor{
+    padding: 15px 10px;;
+    display: flex;
+    align-items: center;
+    background: rgb(1, 122, 54);
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.contenedor label{
+    flex: 1 1 180px;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.contenedor input{
+    flex: 1 1 190px;
+    border: none;
+    height: 25px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.contenedor input:focus{
+    outline: none;
+}
+
+
+.contenedor select{
+    flex: 1 1 190px;
+    border: none;
+    height: 25px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+.contenedor select:focus{
+    outline: none;
+}
+
+.contenedor textarea{
+    flex: 1 1 190px;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.contenedor textarea:focus{
+    outline: none;
+}
+
+.formulario__boton{
+    width: 100%;
+    padding: 5px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: rgb(234, 193, 0);
+    border: 1px solid whitesmoke;
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+}
+
+.formulario__boton:hover{
+    background: rgb(212, 174, 1);
+}
+
+.formulario__boton:focus{
+    outline: none;
+}
+
+
+@media only screen and (min-width: 375px){
+
+    .contenedor label{
+        flex: 1 1 250px;
+        color: white;
+        letter-spacing: 1px;
+    }
+
+    .contenedor input{
+        flex: 1 1 250px;
+        border: none;
+        height: 25px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .contenedor select{
+        flex: 1 1 250px;
+        border: none;
+        height: 25px;
+        padding: 5px;
+        border-radius: 5px;
+        
+    }
+    
+    .contenedor textarea{
+        flex: 1 1 250px;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+}
+
+@media only screen and (min-width: 768px){
+
+    *{
+        font-size: 22px;
+    }
+    .formulario{
+        padding-top: 10px;
+        margin: 60px;
+        padding: 0 20px;
+    }
+
+    .contenedor label{
+        flex: 1 1 150px;
+        color: white;
+        letter-spacing: 1px;
+    }
+
+    .contenedor input{
+        flex: 1 1 150px;
+        border: none;
+        height: 35px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .contenedor select{
+        flex: 1 1 150px;
+        border: none;
+        height: 35px;
+        padding: 5px;
+        border-radius: 5px;
+        
+    }
+    
+    .contenedor textarea{
+        flex: 1 1 150px;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .formulario__boton{
+        padding: 15px;
+    }
+}
+
+@media only screen and (min-width: 1024px){
+
+    *{
+        font-size: 25px;
+    }
+
+    .formulario{
+        padding-top: 10px;
+        margin: 80px;
+        padding-left: 50px;
+        margin-bottom: 60px;
+    }
+
+    .contenedor label{
+        flex: 0 0 350px;
+        color: white;
+        letter-spacing: 1px;
+        padding-left: 50px;
+    }
+
+    .contenedor input{
+        flex: 0 0 350px;
+        border: none;
+        height: 35px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .contenedor select{
+        flex: 0 0 350px;
+        border: none;
+        height: 35px;
+        padding: 5px;
+        border-radius: 5px;
+        
+    }
+    
+    .contenedor textarea{
+        flex: 0 0 350px;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .formulario__boton{
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+

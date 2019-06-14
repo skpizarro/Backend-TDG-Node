@@ -1,0 +1,14 @@
+.section_nosotrosinfo{
+    background: white;
+}
+.section_container{
+    margin: 50px;
+}
+.nosotros_titulo{
+    color: black;
+    letter-spacing: 2px;
+}
+
+.nosotros_parrafo{
+    margin-bottom: 50px;
+}
