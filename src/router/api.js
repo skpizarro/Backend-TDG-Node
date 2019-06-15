@@ -1,9 +1,10 @@
 "use strict";
 
 const express = require('express');
-const qr = require('qr-image');
+// const qr = require('qr-image');
 const router = express.Router();
-var fs = require('fs');
+const plugins = require('../plugins')
+    // var fs = require('fs');
 
 router.use(express.urlencoded());
 router.use(express.json());
@@ -15,13 +16,12 @@ router.get("/api/hello", (req, res) => {
 router.post('/api/users', (req, res) => {
 
     console.log(`request -> POST ${req.path} + hosst que hace la peticion... ${req.hostname}`);
-    // var data = req.body;
-    var data = JSON.stringify(req.body);
+    var jsonBody = req.body;
+    var data = JSON.stringify(jsonBody);
     console.log(`The data extract is: ${data} `);
 
-    var code = qr.image(data, { type: 'png', size: 8, margin: 3, });
-    var output = fs.createWriteStream('../src/img/' + Date.now() + '.png')
-    code.pipe(output);
+    plugins.qr.qr_generate.generateQR(data, jsonBody);
+    plugins.mail.mail_send.sendTheMail(data, jsonBody);
 
     //que debo responder al front....
     res.status(200).json({
