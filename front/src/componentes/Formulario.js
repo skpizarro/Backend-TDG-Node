@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CodigoQR from "./CodigoQR";
 import "../css/Formulario.css";
+const axios = require('axios');
 
 export default class Formulario extends Component {
   //Manejo de los datos del formulario
@@ -31,9 +32,52 @@ export default class Formulario extends Component {
       motivoVisita: this.motivoVisitaRef.current.value
     };
 
-    //enviar al back
-    // fetch(usuario)
+    //  CREAR REQUEST
+    //headers
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    //request config
+    var myInit = {
+      method: 'POST',
+      body: JSON.stringify(usuario),
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default'
+    };
+    var myRequest = new Request('http://localhost:8080/api/users', myInit);
+
+    //enviar reuqest
+    fetch(myRequest).then(function (response) {
+      return response.json();
+    }).then(function (myJson) {
+      console.log(myJson);
+    });
+
+    var config = {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'json'
+    };
     
+    axios.post('http://localhost:8080/api/users', JSON.stringify(usuario), config)
+      .then((response) => {
+      console.log(response.data);
+    });
+
+    /*
+    .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      
+    .then((res) => {
+      // if (!res.ok) {
+      //   console.log(`ERROR RESPONSE... ${res.status} + ${res.url} + ${res.statusText} + ${res.body}`);
+      // }
+      console.log(`response... +  ${res} `);
+      return res.json();
+    })
+    .then(response => console.log('Success:', response));
+    */
+
     //4. Enviarlo al componente principal
     this.props.agregarUsuario(usuario);
     //Resetear el form
@@ -45,7 +89,7 @@ export default class Formulario extends Component {
       <div>
         <form className="formulario" onSubmit={this.capturarInfo}>
           <div className="contenedor">
-            <label>Nombre</label>
+            <label>Nombres</label>
             <input
               required
               type="text"
@@ -56,9 +100,9 @@ export default class Formulario extends Component {
           </div>
 
           <div className="contenedor">
-            <label>Apellido</label>
+            <label>Apellidos</label>
             <input
-              required
+              //required
               type="text"
               name="apellido"
               className="input_apellido"
@@ -70,7 +114,7 @@ export default class Formulario extends Component {
             <label>Documento de identidad</label>
             <input
               required
-              type="text"
+              type="number"
               name="cedula"
               className="input_cedula"
               ref={this.idRef}
@@ -78,7 +122,7 @@ export default class Formulario extends Component {
           </div>
 
           <div className="contenedor">
-            <label>Email</label>
+            <label>Correo</label>
             <input
               required
               type="email"
@@ -91,8 +135,8 @@ export default class Formulario extends Component {
           <div className="contenedor">
             <label>Celular</label>
             <input
-              required
-              type="text"
+              //required
+              type="number"
               name="celular"
               className="input_celular"
               ref={this.celularRef}
@@ -102,7 +146,7 @@ export default class Formulario extends Component {
           <div className="contenedor">
             <label>Tipo de persona</label>
             <select
-              required
+              //required
               name="tipopersona"
               className="select_tipopersona"
               ref={this.tipoPersonaRef}
@@ -114,7 +158,7 @@ export default class Formulario extends Component {
             </select>
           </div>
           <div className="contenedor">
-            <label>Fecha de visita</label>
+            <label>Fecha de la visita</label>
             <input
               required
               type="date"
@@ -135,7 +179,7 @@ export default class Formulario extends Component {
           </div>
 
           <button type="submit" className="formulario__boton">
-            Enviar
+            Enviar generar QR
           </button>
         </form>
         <CodigoQR
