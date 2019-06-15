@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import CodigoQR from "./CodigoQR";
 import "../css/Formulario.css";
-const axios = require('axios');
 
 export default class Formulario extends Component {
   //Manejo de los datos del formulario
@@ -54,27 +53,10 @@ export default class Formulario extends Component {
       console.log(myJson);
     });
 
-    var config = {
-      headers: { 'Content-Type': 'application/json' },
-      responseType: 'json'
-    };
-    
-    axios.post('http://localhost:8080/api/users', JSON.stringify(usuario), config)
-      .then((response) => {
-      console.log(response.data);
-    });
-
-    /*
+      /*
     .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      
-    .then((res) => {
-      // if (!res.ok) {
-      //   console.log(`ERROR RESPONSE... ${res.status} + ${res.url} + ${res.statusText} + ${res.body}`);
-      // }
-      console.log(`response... +  ${res} `);
-      return res.json();
-    })
+    .catch(error => console.error('Error:', error))
+  
     .then(response => console.log('Success:', response));
     */
 
