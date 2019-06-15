@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 function sendTheMail(textoEnviar, jsonEntrada) {
 
-    console.log('ENVIANDO EL EMAIL');
+    console.log(`--------- enviando el email -------------- for ${jsonEntrada.nombre}`);
 
     let subjectTo = `QR my dear ${jsonEntrada.nombre} + ${new Date()} `
 

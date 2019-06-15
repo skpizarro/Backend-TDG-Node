@@ -31,7 +31,7 @@ export default class Formulario extends Component {
       motivoVisita: this.motivoVisitaRef.current.value
     };
 
-    //  CREAR REQUEST
+    //  ---- CREAR REQUEST
     //headers
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -46,7 +46,7 @@ export default class Formulario extends Component {
     };
     var myRequest = new Request('http://localhost:8080/api/users', myInit);
 
-    //enviar reuqest
+    //enviar request
     fetch(myRequest).then(function (response) {
       return response.json();
     }).then(function (myJson) {
@@ -59,6 +59,8 @@ export default class Formulario extends Component {
   
     .then(response => console.log('Success:', response));
     */
+
+   // ---- FIN REQUEST 
 
     //4. Enviarlo al componente principal
     this.props.agregarUsuario(usuario);
