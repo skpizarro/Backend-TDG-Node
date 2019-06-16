@@ -5,8 +5,8 @@ function sendTheMail(textoEnviar, jsonEntrada) {
     console.log(`--------- enviando el email -------------- for ${jsonEntrada.nombre}`);
 
     var tmpMili = Date.now();
-    let subjectTo = `QR dear Cristian.${tmpMili}`;
-    //${jsonEntrada.nombre} + ${new Date()}
+    let subjectTo = `QR dear ${jsonEntrada.nombre} + ${new Date()}`;
+    //
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
