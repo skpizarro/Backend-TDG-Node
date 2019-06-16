@@ -4,7 +4,7 @@ const Server = require("./server/server");
 const router_api = require("./router/api");
 const router_home = require("./router/index");
 
-port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 
 const server = Server.default.init(port);
 

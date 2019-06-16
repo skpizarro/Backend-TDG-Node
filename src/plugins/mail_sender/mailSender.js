@@ -4,7 +4,7 @@ function sendTheMail(textoEnviar, jsonEntrada) {
 
     console.log(`--------- enviando el email -------------- for ${jsonEntrada.nombre}`);
 
-    let subjectTo = `QR my dear ${jsonEntrada.nombre} + ${new Date()} `
+    let subjectTo = `QR dear ${jsonEntrada.nombre} + ${new Date()} `
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -19,7 +19,7 @@ function sendTheMail(textoEnviar, jsonEntrada) {
 
     var mailOptions = {
         from: '"👻 Poli Access Control" <access.control.poli@gmail.com>', // sender address
-        to: "cristian_garces82121@elpoli.edu.co, cgaop7@gmail.com", // list of receivers
+        to: "cristian_garces82121@elpoli.edu.co", // list of receivers
         subject: subjectTo, //"-- Hello ✔",  Subject line
         text: 'el texto o la imagen va aqui\n' + textoEnviar, // plain text body
         //html: "<b>Hello world-----?</b>" // html body

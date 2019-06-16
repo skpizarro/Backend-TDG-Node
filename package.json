@@ -4,6 +4,8 @@
     "description": "api REST backend accescontrol tdg poli CGA, SRD",
     "main": "index.js",
     "scripts": {
+        "start": "node index.js",
+        "nodemon": "nodemon index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Cristian Garces A",
