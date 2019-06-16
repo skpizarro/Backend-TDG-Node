@@ -21,7 +21,7 @@ router.post('/api/users', (req, res) => {
     console.log(`The request data is: \n${data} `);
 
     //plugins.qr.qr_generate.generateQR(data, jsonBody);
-    plugins.mail.mail_send.sendTheMail(data, jsonBody);
+    //plugins.mail.mail_send.sendTheMail(data, jsonBody);
 
     /*    
     if(send_mail){
