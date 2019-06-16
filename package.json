@@ -4,7 +4,7 @@
     "description": "api REST backend accescontrol tdg poli CGA, SRD",
     "main": "index.js",
     "scripts": {
-        "start": "node .",
+        "start": "node app/index.js",
         "nodemon": "nodemon index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
