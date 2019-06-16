@@ -7,6 +7,8 @@ function generateQR(data, jsonData) {
     var code = qr.image(data, { type: 'png', size: 4, margin: 3, });
     var output = fs.createWriteStream('./img/' + Date.now() + '.png')
     code.pipe(output);
+
+    console.log('- QR - DONE -');
 };
 
 module.exports = {

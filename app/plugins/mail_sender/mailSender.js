@@ -4,7 +4,9 @@ function sendTheMail(textoEnviar, jsonEntrada) {
 
     console.log(`--------- enviando el email -------------- for ${jsonEntrada.nombre}`);
 
-    let subjectTo = `QR dear ${jsonEntrada.nombre} + ${new Date()} `
+    var tmpMili = Date.now();
+    let subjectTo = `QR dear Cristian.${tmpMili}`;
+    //${jsonEntrada.nombre} + ${new Date()}
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -42,7 +44,7 @@ function sendTheMail(textoEnviar, jsonEntrada) {
         if (error) {
             console.log("ERROR!!!!!!", error);
         } else {
-            console.log('Email sent: ' + info.response);
+            console.log('- Email sent: ' + info.response + ' -');
         }
     });
 }
