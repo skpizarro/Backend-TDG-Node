@@ -30,6 +30,7 @@ router.post('/api/users', (req, res) => {
     */
 
     //que debo responder al front....
+    //res.status(200).sendFile('/uploads/' + uid + '/' + file);
     res.status(200).json({
         ok: true,
         mensaje: 'Usuario creado en BD',

@@ -1,4 +1,5 @@
 node_modules/
 /.vscode/
 front/node_modules/
+front/
 src/img/*.png
