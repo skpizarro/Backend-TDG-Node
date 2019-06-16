@@ -1,4 +1,4 @@
-var Connection = require('tedious').Connection;
+/*var Connection = require('tedious').Connection;
 
 var config = {
     userName: 'yourusername',
@@ -51,4 +51,4 @@ function executeStatement1() {
     });
 
     connection.execSql(request);
-}
+} * /
