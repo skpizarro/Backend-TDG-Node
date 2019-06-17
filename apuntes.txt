@@ -3,6 +3,20 @@ JSON PRUEBA api/users { "name": "Cristian", "city": "Medallo", "telephone": "555
 CORS --> chrome.exe --user-data-dir="C://Chrome dev session" --disable-web-security
 "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 		
+https://access-control-poli.herokuapp.com/
+
+HEROKU
+> heroku login -> access.control.poli@gmail.com
+> heroku git:remote -a access-control-poli
+
+> git remote
+
+> git push -u origin master
+> git push heroku master
+
+> heroku logs --tail
+> heroku logs --source app --tail
+
 
 FRONT
 npm update
