@@ -20,8 +20,8 @@ router.post('/api/users', (req, res) => {
     var data = JSON.stringify(jsonBody);
     console.log(`The request data is: \n${data} `);
 
-    //plugins.qr.qr_generate.generateQR(data, jsonBody);
-    //plugins.mail.mail_send.sendTheMail(data, jsonBody);
+    plugins.qr.qr_generate.generateQR(data, jsonBody);
+    plugins.mail.mail_send.sendTheMail(data, jsonBody);
 
     /*    
     if(send_mail){
@@ -37,6 +37,7 @@ router.post('/api/users', (req, res) => {
         //datos: data,
         dataJson: jsonBody
     });
+
 });
 
 module.exports = router;
