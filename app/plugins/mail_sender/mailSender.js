@@ -4,8 +4,7 @@ function sendTheMail(textoEnviar, jsonEntrada) {
 
     console.log(`--------- enviando el email -------------- for ${jsonEntrada.nombre}`);
 
-    var tmpMili = Date.now();
-    let subjectTo = `QR dear ${jsonEntrada.nombre} + ${new Date()}`;
+    let subjectTo = `QR Poli Access - ${jsonEntrada.nombre} - generate: ${new Date().toISOString()} (ServerTimeZone)`; //
     //
 
     let transporter = nodemailer.createTransport({
@@ -20,9 +19,9 @@ function sendTheMail(textoEnviar, jsonEntrada) {
     });
 
     var mailOptions = {
-        from: '"👻 Poli Access Control" <access.control.poli@gmail.com>', // sender address
-        to: "cristian_garces82121@elpoli.edu.co", // list of receivers
-        subject: subjectTo, //"-- Hello ✔",  Subject line
+        from: '"👻 Poli Access Control" <access.control.poli@gmail.com>',
+        to: "cristian_garces82121@elpoli.edu.co, santiago_rios82131@elpoli.edu.co", //
+        subject: subjectTo,
         text: 'el texto o la imagen va aqui\n' + textoEnviar, // plain text body
         //html: "<b>Hello world-----?</b>" // html body
         //     ,
@@ -39,14 +38,19 @@ function sendTheMail(textoEnviar, jsonEntrada) {
         // ]
     };
 
-    transporter.sendMail(mailOptions, function(error, info) {
-        console.log("senMail returned!");
-        if (error) {
-            console.log("ERROR!!!!!!", error);
-        } else {
-            console.log('- Email sent: ' + info.response + ' -');
-        }
-    });
+    try {
+
+        transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+                console.log("Error mail sending !", error);
+            } else {
+                console.log('- Email sent: >' + info.response + '<');
+            }
+        });
+
+    } catch (e) {
+        console.log("ERROR enviando email--" + e);
+    }
 }
 
 module.exports = {
