@@ -1,41 +1,34 @@
 "use strict";
-
 const express = require('express');
 const router = express.Router();
 const plugins = require('../plugins')
+    //const qr = require('qr-image');
 
 router.use(express.urlencoded());
 router.use(express.json());
 
 router.get("/api/hello", (req, res) => {
-    res.send({ express: "Hello mmgv" });
+    res.send({ express: "Hello papi" });
 });
 
-router.post('/api/users', (req, res) => {
+router.post('/api/generateqr', (req, res) => {
 
     console.log(`-> POST ${req.path}\nREQUEST HOST ${req.hostname}`);
-    // necesito desde el front enviar en la query $correo = true or false
-    //var send_mail = req.params.correo;
-    var jsonBody = req.body;
-    var data = JSON.stringify(jsonBody);
-    console.log(`The request data is: \n${data} `);
+    var reqJsonBody = req.body;
+    var data = JSON.stringify(reqJsonBody);
+    console.log(`-> The request data is: \n${data} `);
 
-    plugins.qr.qr_generate.generateQR(data, jsonBody);
-    plugins.mail.mail_send.sendTheMail(data, jsonBody);
+    // var code = qr.image(data, { type: 'png', size: 6, margin: 3, });
+    // res.writeHead(200, { 'Content-Type': 'image/png' });
+    // code.pipe(res);
 
-    /*    
-    if(send_mail){
-        plugins.mail.mail_send.sendTheMail(data, jsonBody);
-    }
-    */
+    let qr_done = plugins.qr.qr_generate.generateQR(data, reqJsonBody);
+    plugins.mail.mail_send.sendTheMail(data, reqJsonBody);
 
     //que debo responder al front....
     //res.status(200).sendFile('/uploads/' + uid + '/' + file);
     res.status(200).json({
-        ok: true,
-        mensaje: 'Usuario creado en BD',
-        //datos: data,
-        dataJson: jsonBody
+        ok: qr_done
     });
 
 });
