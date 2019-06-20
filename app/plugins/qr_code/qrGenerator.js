@@ -11,10 +11,10 @@ function generateQR(data, jsonData) {
         // res.writeHead(414, { 'Content-Type': 'text/html' });
         // res.end('<h1>414 Request-URI Too Large</h1>');
         console.log("ERROR HPTA EN EL QR");
-        return false;
+        //return false;
     }
     console.log('- QR - DONE -');
-    return true;
+    // return true;
 };
 
 module.exports = {

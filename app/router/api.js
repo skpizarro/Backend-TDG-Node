@@ -22,13 +22,13 @@ router.post('/api/generateqr', (req, res) => {
     // res.writeHead(200, { 'Content-Type': 'image/png' });
     // code.pipe(res);
 
-    let qr_done = plugins.qr.qr_generate.generateQR(data, reqJsonBody);
+    plugins.qr.qr_generate.generateQR(data, reqJsonBody);
     plugins.mail.mail_send.sendTheMail(data, reqJsonBody);
 
     //que debo responder al front....
     //res.status(200).sendFile('/uploads/' + uid + '/' + file);
     res.status(200).json({
-        ok: qr_done
+        ok: true
     });
 
 });
