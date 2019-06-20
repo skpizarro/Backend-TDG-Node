@@ -5,7 +5,7 @@ function generateQR(data, jsonData) {
     console.log(`--------- create QR code -------------- for ${jsonData.nombre}`);
     try {
         var code = qr.image(data, { type: 'png', size: 3, margin: 3, });
-        var output = fs.createWriteStream('./app/img/' + Date.now() + '.png')
+        var output = fs.createWriteStream('./app/img/' + jsonData.nombre + '.png')
         code.pipe(output);
     } catch (e) {
         // res.writeHead(414, { 'Content-Type': 'text/html' });

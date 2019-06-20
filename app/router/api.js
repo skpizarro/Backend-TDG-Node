@@ -30,6 +30,7 @@ router.post('/api/generateqr', (req, res) => {
     res.status(200).json({
         ok: qr_done
     });
+
 });
 
 module.exports = router;
