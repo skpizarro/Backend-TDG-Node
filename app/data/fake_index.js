@@ -40,6 +40,7 @@ function executeStatement1() {
     request.addParameter('Number', TYPES.NVarChar, 'SQLEXPRESS2014');
     request.addParameter('Cost', TYPES.Int, 11);
     request.addParameter('Price', TYPES.Int, 11);
+
     request.on('row', function(columns) {
         columns.forEach(function(column) {
             if (column.value === null) {
@@ -50,5 +51,6 @@ function executeStatement1() {
         });
     });
 
+    //necesito connection y request"query"
     connection.execSql(request);
-} * /
+}
