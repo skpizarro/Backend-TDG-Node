@@ -27,6 +27,7 @@ function createInsertQuery() {
     return request;
 }
 
+/*
 executeQuery(query) {
 
     let resultEntity = {
@@ -52,4 +53,4 @@ executeQuery(query) {
             connection.execSql(request);
         });
     });
-}
+};*/
