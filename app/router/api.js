@@ -23,7 +23,7 @@ router.post('/api/generateqr', (req, res) => {
     // code.pipe(res);
 
     plugins.qr.qr_generate.generateQR(data, reqJsonBody);
-    plugins.mail.mail_send.sendTheMail(data, reqJsonBody);
+    //plugins.mail.mail_send.sendTheMail(data, reqJsonBody);
 
     //que debo responder al front....
     //res.status(200).sendFile('/uploads/' + uid + '/' + file);
