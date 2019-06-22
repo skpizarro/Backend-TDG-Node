@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const path = require("path");
 
-class Server{
+class Server {
 
     constructor(puerto) {
         this.port = puerto;
@@ -17,6 +17,7 @@ class Server{
     publicFolder() {
         const publicPath = path.resolve(__dirname, '../public');
         this.app.use(express.static(publicPath));
+        console.log(`>>public path >>${publicPath}`);
     }
 
     static init(puerto) {
@@ -25,14 +26,14 @@ class Server{
 
     start(callback) {
         this.app.listen(this.port, callback());
-            //callback corre donde llamo la funcion,
-            //server.start( ()=>{...run this..} )
-        //this.publicFolder();
+        //callback corre donde llamo la funcion,
+        //server.start( ()=>{...run this..} )
+        this.publicFolder();
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json);
     }
 
-    static getApp(){
+    static getApp() {
         return this.app;
     };
 };
