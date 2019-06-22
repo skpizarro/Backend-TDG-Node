@@ -84,3 +84,5 @@ router.js
 				mensaje: 'Vamos bien!!'
 			});
 		});
+
+{"user":{"nombre":"santiago","apellido":"rios","cedula":"1231212","email":"santi_diaz17@hotmail.com","celular":"3017867898","tipoPersona":"estudiante","fecha":"2019-06-29","motivoVisita":"asdadasdasd"}}
