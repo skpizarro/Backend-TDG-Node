@@ -4,10 +4,10 @@ const path = require("path");
 const publicPath = path.resolve(process.cwd(), './public');
 
 const generateQR = (data, jsonData) => {
-    console.log(`--------- create QR code -------------- for ${jsonData.nombre}\n>>  almacenado en ${publicPath}`);
+    console.log(`--------- create QR code -------------- for ${jsonData.user.nombre}\n>>  almacenado en ${publicPath}`);
     try {
         var code = qr.image(data, { type: 'png', size: 3, margin: 3, });
-        var output = fs.createWriteStream(`${publicPath}/${jsonData.nombre}.png`)
+        var output = fs.createWriteStream(`${publicPath}/${jsonData.user.nombre}.png`)
             // var output = fs.createWriteStream('./img/' + jsonData.user.nombre + '.png')
         code.pipe(output);
     } catch (e) {

@@ -20,7 +20,7 @@ function sendTheMail(textoEnviar, jsonEntrada) {
 
     var mailOptions = {
         from: '"👻 Poli Access Control" <access.control.poli@gmail.com>',
-        to: "cristian_garces82121@elpoli.edu.co, santiago_rios82131@elpoli.edu.co", //
+        to: "cristian_garces82121@elpoli.edu.co", //, santiago_rios82131@elpoli.edu.co
         subject: subjectTo,
         text: 'el texto o la imagen va aqui\n' + textoEnviar, // plain text body
         //html: "<b>Hello world-----?</b>" // html body

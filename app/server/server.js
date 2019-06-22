@@ -15,9 +15,11 @@ class Server {
     }
 
     publicFolder() {
-        const publicPath = path.resolve(__dirname, '../public');
-        this.app.use(express.static(publicPath));
-        console.log(`>>public path >>${publicPath}`);
+        //const publicPath = path.resolve(__dirname, '../public');
+        const publicPath2 = path.join(__dirname, '../public');
+        //this.app.use(express.static(publicPath));
+        this.app.use('/static', express.static(publicPath2))
+        console.log(`>>public path >>>${publicPath2}\n--http://localhost:8080/static/qr_image.png--`); //>>${publicPath}\n
     }
 
     static init(puerto) {
