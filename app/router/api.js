@@ -2,12 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const plugins = require('../plugins')
-//const qr = require('qr-image');
+    //const qr = require('qr-image');
 
 router.use(express.urlencoded());
 router.use(express.json());
 
-router.use(function (req, res, next) {
+router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -33,7 +33,6 @@ router.post('/api/generateqr', (req, res) => {
 
     //que debo responder al front....
     //res.status(200).sendFile('/uploads/' + uid + '/' + file);
-    res.header()
     res.json({
         ok: true
     });
