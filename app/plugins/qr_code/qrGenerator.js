@@ -1,7 +1,7 @@
 const qr = require('qr-image');
 var fs = require('fs');
 const path = require("path");
-const publicPath = path.resolve(process.cwd(), './public');
+const publicPath = path.join(process.cwd(), '../public');
 
 const generateQR = (data, jsonData) => {
     console.log(`--------- create QR code -------------- for ${jsonData.user.nombre}\n>>  almacenado en ${publicPath}`);
