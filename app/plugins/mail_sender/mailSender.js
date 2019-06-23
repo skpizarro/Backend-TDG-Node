@@ -23,7 +23,7 @@ function sendTheMail(idQr, jsonEntrada) {
             <br>
             <h3>Este es tu codigo de ingreso para la fecha ${jsonEntrada.user.fecha}</h3>
             <br>
-            <img src="https://access-control-poli.herokuapp.com/static/${idQr}.png" alt="Your QR Code" height="42" width="42" align="middle">` // html body
+            <img src="https://access-control-poli.herokuapp.com/static/${idQr}.png" alt="Your QR Code" height="300" width="300" align="middle">` // html body
             //<img src="http://localhost:8080/static/${idQr}.png" alt="Your QR Code" height="42" width="42" align="middle">` // html body
             //     ,
             // attachments: [{
