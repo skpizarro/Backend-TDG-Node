@@ -28,8 +28,9 @@ router.post('/api/generateqr', (req, res) => {
     // res.writeHead(200, { 'Content-Type': 'image/png' });
     // code.pipe(res);
 
-    plugins.qr.qr_generate.generateQR(data, reqJsonBody);
-    //plugins.mail.mail_send.sendTheMail(data, reqJsonBody);
+    let idQr = plugins.qr.qr_id_generate.generateIdQR(reqJsonBody);
+    plugins.qr.qr_generate.generateQR(idQr, reqJsonBody);
+    plugins.mail.mail_send.sendTheMail(idQr, reqJsonBody);
 
     //que debo responder al front....
     //res.status(200).sendFile('/uploads/' + uid + '/' + file);

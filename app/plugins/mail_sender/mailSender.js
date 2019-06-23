@@ -1,41 +1,42 @@
 const nodemailer = require('nodemailer');
+// const qr_id_gen = require('../index');
 
-function sendTheMail(textoEnviar, jsonEntrada) {
+function sendTheMail(idQr, jsonEntrada) {
 
-    console.log(`--------- enviando el email -------------- for ${jsonEntrada.nombre}`);
-
-    let subjectTo = `QR Poli Access - ${jsonEntrada.nombre} - generate: ${new Date().toISOString()} (ServerTimeZone)`; //
-    //
+    console.log(`--------- enviando el email -------------- for ${jsonEntrada.user.email}`);
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
-        // host: 'smtp.gmail.com',
-        // port: 465,
-        // secure: true, // true for 465, false for other ports
         auth: {
             user: 'access.control.poli@gmail.com',
             pass: 'politdgac2019'
         }
     });
+    let subjectTo = `QR Access - ${jsonEntrada.user.nombre} - generate: ${idQr}`; //
 
     var mailOptions = {
-        from: '"👻 Poli Access Control" <access.control.poli@gmail.com>',
-        to: "cristian_garces82121@elpoli.edu.co", //, santiago_rios82131@elpoli.edu.co
+        from: '"👻 Poli Access" <access.control.poli@gmail.com>',
+        to: jsonEntrada.user.email, //, santiago_rios82131@elpoli.edu.co
         subject: subjectTo,
-        text: 'el texto o la imagen va aqui\n' + textoEnviar, // plain text body
-        //html: "<b>Hello world-----?</b>" // html body
-        //     ,
-        // attachments: [{
-        //         filename: 'notes.txt',
-        //         content: 'Some notes about this e-mail',
-        //         contentType: 'text/plain' // optional, would be detected from the filename
-        //     },
-        //     { // File Stream attachment
-        //         filename: 'nyan cat ✔.gif',
-        //         path: __dirname + '/assets/nyan.gif',
-        //         cid: 'xxx@example.com' // should be as unique as possible
-        //     }
-        // ]
+        //text: 'el texto o la imagen va aqui\n' + textoEnviar, // plain text body
+        html: `<h1>Hola ${jsonEntrada.user.nombre}</h1>
+            <br>
+            <h3>Este es tu codigo de ingreso para la fecha ${jsonEntrada.user.fecha}</h3>
+            <br>
+            <img src="https://access-control-poli.herokuapp.com/static/${idQr}.png" alt="Your QR Code" height="42" width="42" align="middle">` // html body
+            //<img src="http://localhost:8080/static/${idQr}.png" alt="Your QR Code" height="42" width="42" align="middle">` // html body
+            //     ,
+            // attachments: [{
+            //         filename: 'notes.txt',
+            //         content: 'Some notes about this e-mail',
+            //         contentType: 'text/plain' // optional, would be detected from the filename
+            //     },
+            //     { // File Stream attachment
+            //         filename: 'nyan cat ✔.gif',
+            //         path: __dirname + '/assets/nyan.gif',
+            //         cid: 'xxx@example.com' // should be as unique as possible
+            //     }
+            // ]
     };
 
     try {
