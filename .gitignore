@@ -1,5 +1,5 @@
 node_modules/
 /.vscode/
 app/test.js
-#app/public/*.png
+app/public/*.png
 #app/img/*.png

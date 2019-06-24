@@ -1,42 +1,28 @@
 const nodemailer = require('nodemailer');
-// const qr_id_gen = require('../index');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.MAIL_USER || 'access.control.poli@gmail.com',
+        pass: process.env.MAIL_PASS || 'politdgac2019'
+    }
+});
 
 function sendTheMail(idQr, jsonEntrada) {
 
     console.log(`--------- enviando el email -------------- for ${jsonEntrada.user.email}`);
 
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'access.control.poli@gmail.com',
-            pass: 'politdgac2019'
-        }
-    });
     let subjectTo = `QR Access - ${jsonEntrada.user.nombre} - generate: ${idQr}`; //
 
     var mailOptions = {
         from: '"👻 Poli Access" <access.control.poli@gmail.com>',
         to: jsonEntrada.user.email, //, santiago_rios82131@elpoli.edu.co
         subject: subjectTo,
-        //text: 'el texto o la imagen va aqui\n' + textoEnviar, // plain text body
         html: `<h1>Hola ${jsonEntrada.user.nombre}</h1>
             <br>
-            <h3>Este es tu codigo de ingreso para la fecha ${jsonEntrada.user.fecha}</h3>
+            <h3>Este es tu codigo de ingreso a las granjas para la fecha ${jsonEntrada.user.fecha}</h3>
             <br>
-            <img src="https://access-control-poli.herokuapp.com/static/${idQr}.png" alt="Your QR Code" height="300" width="300" align="middle">` // html body
-            //<img src="http://localhost:8080/static/${idQr}.png" alt="Your QR Code" height="42" width="42" align="middle">` // html body
-            //     ,
-            // attachments: [{
-            //         filename: 'notes.txt',
-            //         content: 'Some notes about this e-mail',
-            //         contentType: 'text/plain' // optional, would be detected from the filename
-            //     },
-            //     { // File Stream attachment
-            //         filename: 'nyan cat ✔.gif',
-            //         path: __dirname + '/assets/nyan.gif',
-            //         cid: 'xxx@example.com' // should be as unique as possible
-            //     }
-            // ]
+            <img src="https://qr-storage-poli.s3-sa-east-1.amazonaws.com/${idQr}.png" alt="Your QR Code" height="300" width="300" align="middle">` // html
     };
 
     try {

@@ -85,4 +85,18 @@ router.js
 			});
 		});
 
-{"user":{"nombre":"santiago","apellido":"rios","cedula":"1231212","email":"santi_diaz17@hotmail.com","celular":"3017867898","tipoPersona":"estudiante","fecha":"2019-06-29","motivoVisita":"asdadasdasd"}}
+{"user":{"nombre":"CRISTIAN","apellido":"garces","cedula":"1111111","email":"cristian_garces82121@elpoli.edu.co","celular":"5555555555","tipoPersona":"estudiante","fecha":"2019-06-29","motivoVisita":"ooooooooo"}}
+
+ARN arn:aws:s3:::qr-storage-poli
+{
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Sid":"AddPerm",
+      "Effect":"Allow",
+      "Principal": "*",
+      "Action":["s3:*"],
+      "Resource":["arn:aws:s3:::qr-storage-poli/*"]
+    }
+  ]
+}

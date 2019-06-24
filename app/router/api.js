@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const plugins = require('../plugins')
-    //const qr = require('qr-image');
 
 router.use(express.urlencoded());
 router.use(express.json());
@@ -20,20 +19,16 @@ router.get("/api/hello", (req, res) => {
 router.post('/api/generateqr', (req, res) => {
 
     console.log(`-> POST ${req.path}\nREQUEST HOST ${req.hostname}`);
+
     var reqJsonBody = req.body;
     var data = JSON.stringify(reqJsonBody);
-    console.log(`-> The request data is: \n${data} `);
-
-    // var code = qr.image(data, { type: 'png', size: 6, margin: 3, });
-    // res.writeHead(200, { 'Content-Type': 'image/png' });
-    // code.pipe(res);
-
     let idQr = plugins.qr.qr_id_generate.generateIdQR(reqJsonBody);
+
+    console.log(`-> The request data is: \n${data}\n${idQr}`);
+
     plugins.qr.qr_generate.generateQR(idQr, reqJsonBody);
     plugins.mail.mail_send.sendTheMail(idQr, reqJsonBody);
 
-    //que debo responder al front....
-    //res.status(200).sendFile('/uploads/' + uid + '/' + file);
     res.json({
         ok: true
     });
