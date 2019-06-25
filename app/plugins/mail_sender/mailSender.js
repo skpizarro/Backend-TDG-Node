@@ -1,10 +1,18 @@
 const nodemailer = require('nodemailer');
+const path = require("path");
+var configPath = path.join(process.cwd(), '../app/config');
+if (process.env.NODE_ENV === 'production') {
+    configPath = path.join(process.cwd(), './app/config');
+}
+const config = require(configPath);
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.MAIL_USER || 'access.control.poli@gmail.com',
-        pass: process.env.MAIL_PASS || 'politdgac2019'
+        user: config.mail_user,
+        pass: config.mail_password
+            // user: config.mail_user || process.env.MAIL_USER,
+            // pass: config.mail_password || process.env.MAIL_PASS
     }
 });
 
