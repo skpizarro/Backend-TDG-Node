@@ -14,18 +14,23 @@ router.use(function(req, res, next) {
 });
 
 router.get("/api/hello", (req, res) => {
-    res.send({ express: "Hello papi" });
+    res.send({ express: "Hello World" });
+});
+
+router.get("/api/validateqr", (req, res) => {
+    let idQR = req.query.id;
+    //buscar en bd el id
+    res.send({ express: "Hola aqui validamos el qr" });
 });
 
 router.post('/api/generateqr', (req, res) => {
-
-    console.log(`-> POST ${req.path}\nREQUEST HOST ${req.hostname}`);
 
     var reqJsonBody = req.body;
     var data = JSON.stringify(reqJsonBody);
     let idQr = plugins.qr.qr_id_generate.generateIdQR(reqJsonBody);
 
-    console.log(`-> The request data is: \n${data}\n${idQr}`);
+    console.log(`-> POST ${req.path}`);
+    console.log(`-> The request data is:\n${data}\nid QR:${idQr}`);
 
     plugins.qr.qr_generate.generateQR(idQr, reqJsonBody);
     plugins.mail.mail_send.sendTheMail(idQr, reqJsonBody);
@@ -33,7 +38,6 @@ router.post('/api/generateqr', (req, res) => {
     res.json({
         ok: true
     });
-
 });
 
 module.exports = router;
