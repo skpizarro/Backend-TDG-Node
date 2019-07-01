@@ -1,6 +1,6 @@
 node_modules/
+/.vscode/
 app/test.js
 app/public/*.png
 app/.env
-#/.vscode/
 #app/img/*.png

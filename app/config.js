@@ -5,29 +5,29 @@ dotenv.config();
 
 // capture the environment variables the application needs
 const {
+    MAIL_PASS,
+    MAIL_USER,
+    POSTGRES_DB,
+    POSTGRES_HOST,
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_URI,
+    S3_ACCESS_KEY,
     S3_BUCKET,
     S3_REGION,
-    S3_ACCESS_KEY,
-    S3_SECRET_ACCESS_KEY,
-    MAIL_USER,
-    MAIL_PASS,
-    SQL_SERVER,
-    SQL_DATABASE,
-    SQL_USER,
-    SQL_PASSWORD,
-    SQL_ENCRYPT
+    S3_SECRET_ACCESS_KEY
 } = process.env;
 
 module.exports = {
-    bucket: S3_BUCKET,
-    region: S3_REGION,
-    access_key: S3_ACCESS_KEY,
-    secret_access_key: S3_SECRET_ACCESS_KEY,
     mail_user: MAIL_USER,
     mail_password: MAIL_PASS,
-    db_server: SQL_SERVER,
-    db_name: SQL_DATABASE,
-    db_user: SQL_USER,
-    db_password: SQL_PASSWORD,
-    db_encrypt: SQL_ENCRYPT
+    db_server: POSTGRES_HOST,
+    db_name: POSTGRES_DB,
+    db_user: POSTGRES_USER,
+    db_password: POSTGRES_PASSWORD,
+    db_uri: POSTGRES_URI,
+    access_key: S3_ACCESS_KEY,
+    bucket: S3_BUCKET,
+    region: S3_REGION,
+    secret_access_key: S3_SECRET_ACCESS_KEY
 };
