@@ -2,7 +2,11 @@
 
 const express = require('express');
 const router = express.Router();
-const plugins = require('../plugins')
+const plugins = require('../plugins');
+const dotenv = require("dotenv");
+dotenv.config();
+
+const MAIL_USER = process.env.MAIL_USER;
 
 router.use(express.urlencoded());
 router.use(express.json());
@@ -14,8 +18,8 @@ router.use(function(req, res, next) {
 });
 
 router.get("/api/hello", (req, res) => {
-    console.log(`-> GET ${req.path}`);
-    res.send({ express: "Hello World" });
+    console.log(`-> GET ${req.path} ->COMUNICACION: ${MAIL_USER}`);
+    res.send({ express: `ayuda:-> ${MAIL_USER}` });
 });
 
 router.get("/api/validateqr", (req, res) => {
