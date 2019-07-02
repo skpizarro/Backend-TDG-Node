@@ -100,3 +100,31 @@ ARN arn:aws:s3:::qr-storage-poli
     }
   ]
 }
+
+----------
+#DB
+DROP TABLE [ IF EXISTS ] public.solicitud_ingreso
+
+CREATE TABLE public.solicitud_ingreso
+(
+    id_solicitud varchar(70) COLLATE pg_catalog."default" NOT NULL,
+    id_usuario numeric(20,0) NOT NULL,
+    nombre_usuario varchar(80) COLLATE pg_catalog."default" NOT NULL,
+    email_usuario varchar(50) COLLATE pg_catalog."default" NOT NULL,
+    tipo_usuario varchar(30) COLLATE pg_catalog."default" NOT NULL,
+    fecha_visita varchar(20) COLLATE pg_catalog."default" NOT NULL,
+    motivo_visita text COLLATE pg_catalog."default",
+    CONSTRAINT pk_id_solicitud PRIMARY KEY (id_solicitud)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.solicitud_ingreso
+    OWNER to jruvdeaplphskx;
+
+-------
+INSERT INTO public.solicitud_ingreso(
+        id_solicitud,       id_usuario, nombre_usuario,         email_usuario,      tipo_usuario, fecha_visita, motivo_visita)
+VALUES ('correo_mmddhhmmss', 11223344, 'Crisis Cesgar Agdddd', 'cgaop7@gmail.com', 'Estudiantt', '2019-06-59', 'MuuuuuuuuuuuuuuuuuchhhhhhhhhhhhhhhooooooooooooTEXTO');

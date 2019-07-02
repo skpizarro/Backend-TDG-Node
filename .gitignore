@@ -3,4 +3,5 @@ node_modules/
 app/test.js
 app/public/*.png
 app/.env
+app/data
 #app/img/*.png
