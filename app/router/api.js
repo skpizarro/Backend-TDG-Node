@@ -1,14 +1,13 @@
 "use strict";
 
+const { Client } = require('pg');
 const express = require('express');
 const router = express.Router();
 const plugins = require('../plugins');
-const dotenv = require("dotenv");
-const { Client } = require('pg');
-dotenv.config();
+const config = require('../config');
 
-const MAIL_USER = process.env.MAIL_USER;
-const POSTGRES_URI = process.env.POSTGRES_URI;
+const MAIL_USER = config.mail_user;
+const POSTGRES_URI = config.db_uri;
 
 router.use(express.urlencoded());
 router.use(express.json());
@@ -21,22 +20,6 @@ router.use(function(req, res, next) {
 
 router.get("/api/hello", (req, res) => {
     console.log(`\n-> GET ${req.path}`);
-    res.send({ express: `ayuda:-> ${MAIL_USER}` });
-});
-router.get("/api/delete:id", (req, res) => {
-    console.log(`\n-> GET ${req.path}`);
-
-    /*const deleteQuery = 'DELETE FROM solicitud_ingreso WHERE id=$1 returning *';
-    try {
-      const { rows } = await db.query(deleteQuery, [req.user.id]);
-      if(!rows[0]) {
-        return res.status(404).send({'message': 'user not found'});
-      }
-      return res.status(204).send({ 'message': 'deleted' });
-    } catch(error) {
-      return res.status(400).send(error);
-    }*/
-
     res.send({ express: `ayuda:-> ${MAIL_USER}` });
 });
 
@@ -73,53 +56,16 @@ router.post('/api/generateqr', (req, res) => {
             .then(response => {
                 console.log('response: ' + response.rows);
                 client.end()
-                    //plugins.qr.qr_generate.generateQR(idQr, reqJson);
-                    //plugins.mail.mail_send.sendTheMail(idQr, reqJson);
-                return res.status(200).send({
+                plugins.qr.qr_generate.generateQR(idQr, reqJson);
+                //plugins.mail.mail_send.sendTheMail(idQr, reqJson);
+                return res.status(201).send({
                     ok: true
                 });
             })
             .catch(err => {
                 client.end();
                 console.log('error query insert not excecuted: ' + err);
-                return res.status(500).send('Error, query insert not excecuted' + err);
-            });
-    });
-});
-
-router.get('/api/todos', (req, res, next) => {
-    console.log(`-> GET ${req.path}`);
-    const client = new Client({
-        connectionString: POSTGRES_URI,
-        ssl: true,
-    })
-    const queryText = 'SELECT * FROM solicitud_ingreso';
-
-    client.connect((err, done) => {
-        if (err) {
-            done();
-            console.log(`error conectando db, path: ${req.path} ` + err);
-            return res.status(500).json({ success: false, data: err });
-        }
-        client.query(queryText)
-            .then(response => {
-                if (response.rows.length < 1) {
-                    client.end()
-                    res.status(404).send({
-                        status: 'Failed',
-                        message: 'No requests information found',
-                    });
-                } else {
-                    client.end()
-                    res.status(200).send({
-                        ok: true,
-                        data: response.rows
-                    });
-                }
-            })
-            .catch(err => {
-                client.end()
-                return res.status(500).json({ success: false, data: 'error en query ' + queryText + ' -> ' + err });
+                return res.status(400).send('Error, query insert not excecuted' + err);
             });
     });
 });
