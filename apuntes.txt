@@ -29,64 +29,9 @@ https://access-control-poli.herokuapp.com/
 FRONT
 npm update
 npm start
-
-router.js
-		router.get('/api/generateqr', (req, res) => {
-			//recibo query params $correo=true || $correo=false
-			let body = req.body;
-			// let sendMail = req.query.correo || false;
-			// sendMail = Boolean(sendMail);
-
-			// if (sendMail) {
-			//     //MyMethods.sendMailTo(req.body.email, qrimage)
-			// }
-
-			console.log(`request -> GET ${req.path}`);
-			const user = req.body; //.name.....
-			// if (err) {
-			//     console.log(`Error GET ./  _:` + err);
-			//     res.json({
-			//         ok: false,
-			//         mensaje: 'Vamos mal!!'
-			//     })
-			// }
-
-			//recibir data del formulario (json)
-
-			//generarQR
-
-			//recibir parametro en el path /api/generateqr $correo = 
-
-			//if(true)->(enviarQRemail)
-
-			//if(false)->(exponerQRdownload)
-
-			//RES.CREADO,RES.NOCREADO
-
-			res.status(200).json({
-				ok: true,
-				mensaje: 'Vamos bien!!',
-				usuario: user
-			});
-		});
-
-		router.get('/api/validateqr', (req, res) => {
-
-			console.log(`request -> GET ${req.path}`);
-
-			// recibir data del QR
-			// consultar #QR, documento
-			// si QR.valido (por fecha) RES.OK
-			// si QR.invalido (por fecha o documento) RES.FALSE
-
-			res.status(200).json({
-				ok: true,
-				mensaje: 'Vamos bien!!'
-			});
-		});
-
+------------------
 {"user":{"nombre":"CRISTIAN","apellido":"garces","cedula":"1111111","email":"cristian_garces82121@elpoli.edu.co","celular":"5555555555","tipoPersona":"estudiante","fecha":"2019-06-29","motivoVisita":"ooooooooo"}}
-
+------------------
 ARN arn:aws:s3:::qr-storage-poli
 {
   "Version":"2012-10-17",
@@ -100,7 +45,17 @@ ARN arn:aws:s3:::qr-storage-poli
     }
   ]
 }
+-------------
+select * from solicitud_ingreso
+select * from solicitud_aprobada
+select * from usuario_admin
 
+INSERT INTO public.usuario_admin(id_usuario, nombre_usuario, clave_usuario)
+VALUES (1234, 'ferney andres ferneyy', 'ee2RR');
+
+
+INSERT INTO public.solicitud_aprobada(id_aprobada,id_usuario,nombre_usuario,email_usuario,tipo_usuario,fecha_visita,motivo_visita)
+VALUES ('aprobada123', 5656565, 'aadddaa aadsdas Agdddd', 'eeee@rrrr.com', 'Estudiantt', '2019-06-59', 'MuuuuuuuuuuuuuuuuuchhhhhhhhhhhhhhhooooooooooooTEXTO');
 ----------
 #DB
 DROP TABLE [ IF EXISTS ] public.solicitud_ingreso
@@ -128,3 +83,57 @@ ALTER TABLE public.solicitud_ingreso
 INSERT INTO public.solicitud_ingreso(
         id_solicitud,       id_usuario, nombre_usuario,         email_usuario,      tipo_usuario, fecha_visita, motivo_visita)
 VALUES ('correo_mmddhhmmss', 11223344, 'Crisis Cesgar Agdddd', 'cgaop7@gmail.com', 'Estudiantt', '2019-06-59', 'MuuuuuuuuuuuuuuuuuchhhhhhhhhhhhhhhooooooooooooTEXTO');
+
+######################
+
+#DB
+DROP TABLE IF EXISTS public.solicitud_aprobada;
+
+CREATE TABLE public.solicitud_aprobada
+(
+    id_aprobada character varying(70) COLLATE pg_catalog."default" NOT NULL,
+    id_usuario numeric(20,0) NOT NULL,
+    nombre_usuario character varying(80) COLLATE pg_catalog."default" NOT NULL,
+    email_usuario character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    tipo_usuario character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    fecha_visita character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    motivo_visita text COLLATE pg_catalog."default",
+    CONSTRAINT pk_id_aprobada PRIMARY KEY (id_aprobada)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.solicitud_aprobada
+    OWNER to jruvdeaplphskx;
+
+INSERT INTO public.solicitud_aprobada(id_aprobada, id_usuario, nombre_usuario, email_usuario, tipo_usuario, fecha_visita, motivo_visita)
+	VALUES (?, ?, ?, ?, ?, ?, ?);
+
+INSERT INTO public.solicitud_aprobada(
+        id_aprobada,       id_usuario, nombre_usuario,         email_usuario,      tipo_usuario, fecha_visita, motivo_visita)
+VALUES ('aprobada123', 5656565, 'aadddaa aadsdas Agdddd', 'eeee@rrrr.com', 'Estudiantt', '2019-06-59', 'MuuuuuuuuuuuuuuuuuchhhhhhhhhhhhhhhooooooooooooTEXTO');
+######################
+
+#DB
+DROP TABLE IF EXISTS public.usuario_admin
+
+CREATE TABLE public.usuario_admin
+(
+    id_usuario numeric(20) NOT NULL,
+    nombre_usuario character varying(80) NOT NULL,
+    clave_usuario character varying(20) NOT NULL,
+    CONSTRAINT pk_id_admin PRIMARY KEY (id_usuario)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.usuario_admin
+    OWNER to jruvdeaplphskx;
+
+INSERT INTO public.usuario_admin(id_usuario, nombre_usuario, clave_usuario)
+VALUES (1234, 'aadddaa aadsdas Agdddd', 'ee2RR');
+######################
