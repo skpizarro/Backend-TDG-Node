@@ -1,22 +1,26 @@
-"use strict";
+/**
+ *  bodyParser.urlencoded(): analiza el texto como datos codificados en URL 
+ * (enviar datos de formularios normales establecidos a POST) 
+ * y expone el objeto resultante (con las claves y los valores) en req.body.
+ * 
+ *  bodyParser.json(): Analiza el texto como JSON 
+ * y expone el objeto resultante en req.body.
+ */
 
 const { Client } = require('pg');
 const express = require('express');
 const router = express.Router();
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const plugins = require('../plugins');
 const config = require('../config');
 
 const MAIL_USER = config.mail_user;
 const POSTGRES_URI = config.db_uri;
 
-router.use(express.urlencoded());
-router.use(express.json());
-
-router.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+router.use(cors());
 
 router.get("/api/hello", (req, res) => {
     console.log(`\n-> GET ${req.path}`);

@@ -1,5 +1,3 @@
-JSON PRUEBA api/users { "name": "Cristian", "city": "Medallo", "telephone": "5555555555" }
-
 //TOKEN
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
@@ -14,7 +12,7 @@ CORS
 HEROKU
 https://access-control-poli.herokuapp.com/
 
-> heroku login -> access.control.poli@gmail.com
+> heroku login -
 > heroku git:remote -a access-control-poli
 
 > git remote
@@ -30,7 +28,6 @@ FRONT
 npm update
 npm start
 ------------------
-{"user":{"nombre":"CRISTIAN","apellido":"garces","cedula":"1111111","email":"cristian_garces82121@elpoli.edu.co","celular":"5555555555","tipoPersona":"estudiante","fecha":"2019-06-29","motivoVisita":"ooooooooo"}}
 ------------------
 ARN arn:aws:s3:::qr-storage-poli
 {
@@ -82,7 +79,7 @@ ALTER TABLE public.solicitud_ingreso
 -------
 INSERT INTO public.solicitud_ingreso(
         id_solicitud,       id_usuario, nombre_usuario,         email_usuario,      tipo_usuario, fecha_visita, motivo_visita)
-VALUES ('correo_mmddhhmmss', 11223344, 'Crisis Cesgar Agdddd', 'cgaop7@gmail.com', 'Estudiantt', '2019-06-59', 'MuuuuuuuuuuuuuuuuuchhhhhhhhhhhhhhhooooooooooooTEXTO');
+VALUES ('correo_mmddhhmmss', 11223344, 'Crisis Cesgar Agdddd', '', 'Estudiantt', '2019-06-59', 'MuuuuuuuuuuuuuuuuuchhhhhhhhhhhhhhhooooooooooooTEXTO');
 
 ######################
 
