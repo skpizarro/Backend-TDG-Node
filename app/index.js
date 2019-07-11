@@ -5,11 +5,7 @@ const config = require('./config');
 
 const router_home = require("./router/index");
 const router_api = require("./router/api");
-const router_api_adm = require("./router/apiAdmin");
 const router_api_admon = require("./router/apiadmon");
-// const dotenv = require("dotenv");
-// dotenv.config();
-// read in the .env file
 
 const port = process.env.PORT || 8080;
 const NODE_ENV = process.env.NODE_ENV;
@@ -19,7 +15,6 @@ const server = Server.default.init(port);
 
 server.app.use(router_api);
 server.app.use(router_api_admon);
-server.app.use(router_api_adm);
 server.app.use(router_home);
 
 server.start(() => {

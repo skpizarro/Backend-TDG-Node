@@ -1,22 +1,18 @@
-/*
-Route path: /users/:userId/books/:bookId
-Request URL: http://localhost:3000/users/34/books/8989
-req.params: { "userId": "34", "bookId": "8989" } 
-console.log(JSON.stringify({ x: 5, y: 6 })); str->JSON
-*/
-const { Client } = require('pg');
+const Pool = require('pg').Pool;
+// const R = require('ramda');
 const config = require('../config');
-const plugins = require('../plugins');
+// const plugins = require('../plugins');
 const POSTGRES_URI = config.db_uri;
+
+const pool = new Pool({
+    connectionString: POSTGRES_URI,
+    ssl: true,
+});
 
 //'/api/solicitudes', solicitudes.approve
 exports.approve = function(req, res) {
     console.log(`-> POST (approve) ${req.path}`);
     var reqJson = req.body;
-    const client = new Client({
-        connectionString: POSTGRES_URI,
-        ssl: true,
-    });
     //idQr --> buscar registro en BD sol_ing => data
     //insertar registro BD sol_aprb
     //eliminar registro BD sol_ing
@@ -27,38 +23,33 @@ exports.approve = function(req, res) {
 
 //'/api/solicitudes', solicitudes.findAll
 exports.findAll = function(req, res) {
-    console.log("--->findAll\n");
-    console.log(`-> GET ${req.path}`);
-    const client = new Client({
-        connectionString: POSTGRES_URI,
-        ssl: true,
-    })
+    console.log(`--->findAll\n-> GET ${req.path}`);
     const queryText = 'SELECT * FROM solicitud_ingreso';
 
-    client.connect((err, done) => {
+    pool.connect((err) => {
         if (err) {
-            done();
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ success: false, data: err });
         }
-        client.query(queryText)
+        pool.query(queryText)
             .then(response => {
+                //const result = R.values(response.rows);
+                const data = response.rows;
                 if (response.rows.length < 1) {
-                    client.end()
                     res.status(404).send({
                         status: 'Failed',
                         message: 'No requests information found',
                     });
                 } else {
-                    client.end()
-                    res.status(200).send({
-                        ok: true,
-                        data: response.rows
-                    });
+                    //console.log(data);
+                    res.status(200).send(data);
+                    // res.status(200).send({
+                    //     ok: true,
+                    //     data: response.rows
+                    // });
                 }
             })
             .catch(err => {
-                client.end()
                 return res.status(400).json({ success: false, data: 'error en query ' + queryText + ' -> ' + err });
             });
     });
@@ -66,33 +57,24 @@ exports.findAll = function(req, res) {
 
 //'/api/solicitudes/:id', solicitudes.findOne
 exports.findOne = function(req, res) {
-    console.log("--->findOne \n");
-    console.log(`-> GET ${req.path}`);
-    var idQr = req.params.id;
-    const client = new Client({
-        connectionString: POSTGRES_URI,
-        ssl: true,
-    })
+    console.log(`--->findOne\n-> GET ${req.path} \n`);
 
-    //const queryText = `SELECT * FROM solicitud_ingreso WHERE id_solicitud = '${idQr}'`;
+    var idQr = req.params.id;
     var queryText = 'SELECT * FROM solicitud_ingreso WHERE id_solicitud = $1';
-    var value = [idQr];
-    client.connect((err, done) => {
+
+    pool.connect((err) => {
         if (err) {
-            done();
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ success: false, data: err });
         }
-        client.query(queryText, value)
+        pool.query(queryText, [idQr])
             .then(response => {
                 if (response.rows.length < 1) {
-                    client.end()
                     res.status(404).send({
                         status: 'Failed',
                         message: 'No requests information found',
                     });
                 } else {
-                    client.end()
                     res.status(200).send({
                         ok: true,
                         data: response.rows
@@ -100,7 +82,6 @@ exports.findOne = function(req, res) {
                 }
             })
             .catch(err => {
-                client.end()
                 return res.status(400).json({ success: false, data: 'error en query ' + queryText + ' -> ' + err });
             });
     });
@@ -109,11 +90,84 @@ exports.findOne = function(req, res) {
 //'/api/solicitudes/:id', solicitudes.update
 exports.update = function(req, res) {
     console.log("--->update :\n");
-    res.send("upft Actualizar: \n");
+
+    var idQr = req.params.id;
+    var queryText = 'UPDATE solicitud_ingreso SET xxx = $1, yyyy = $2 WHERE id_solicitud = $3';
+
+    /** 
+     const id = parseInt(request.params.id)
+     const { name, email } = request.body
+    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
+    [name, email, id]
+    
+    pool.connect((err) => {
+        if (err) {
+            console.log(`error conectando db, path: ${req.path} ` + err);
+            return res.status(500).json({ success: false, data: err });
+        }
+        pool.query(queryText, [x, y, idQr])
+        .then(response => {
+            if (response.rows.length < 1) {
+                    res.status(404).send({
+                        status: 'Failed',
+                        message: 'Cann´t update item with id: ' + idQr,
+                    });
+                } else {
+                    res.status(200).send({
+                        ok: true,
+                        alert: 'Item updated id: ' + idQr,
+                        data: response.rows
+                    });
+                }
+            })
+            .catch(err => {
+                return res.status(400).json({ success: false, data: 'error en query ' + queryText + ' -> ' + err });
+            });
+        });*/
 };
 
 //'/api/solicitudes/:id', solicitudes.delete
 exports.delete = function(req, res) {
-    console.log("--->delete: \n");
-    res.send("del Eliminar:\n");
+    var idQr = req.params.id;
+    var queryText = 'DELETE FROM solicitud_ingreso WHERE id_solicitud = $1 returning *';
+    console.log("--->delete: " + idQr);
+
+    pool.connect((err) => {
+        if (err) {
+            console.log(`error conectando db, path: ${req.path} ` + err);
+            return res.status(500).json({ success: false, data: err });
+        }
+        pool.query(queryText, [idQr])
+            .then(response => {
+                if (response.rows.length < 1) {
+                    res.status(404).send({
+                        status: 'Failed',
+                        message: 'Cann´t delete item with id: ' + idQr,
+                    });
+                } else {
+                    res.status(200).send({
+                        ok: true,
+                        alert: 'Item deleted id: ' + idQr,
+                        data: response.rows
+                    });
+                }
+            })
+            .catch(err => {
+                return res.status(400).json({ success: false, data: 'error en query ' + queryText + ' -> ' + err });
+            });
+    });
 };
+
+// const fields = response.fields.map(field => field.name);
+// console.log(fields);
+
+// var resultt = new Array;
+// data.forEach(row => {
+//     resultt.push(`Id: ${row.id_solicitud}       Name: ${row.nombre_usuario}`);
+// }
+/*
+Route path: /users/:userId/books/:bookId
+Request URL: http://localhost:3000/users/34/books/8989
+req.params: { "userId": "34", "bookId": "8989" } 
+console.log(JSON.stringify({ x: 5, y: 6 })); str->JSON
+*/
