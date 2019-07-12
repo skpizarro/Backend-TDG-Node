@@ -1,11 +1,9 @@
 const Pool = require('pg').Pool;
-// const R = require('ramda');
 const config = require('../config');
-// const plugins = require('../plugins');
-const POSTGRES_URI = config.db_uri;
+//const plugins = require('../plugins');
 
 const pool = new Pool({
-    connectionString: POSTGRES_URI,
+    connectionString: config.db_uri,
     ssl: true,
 });
 
@@ -41,7 +39,7 @@ exports.findAll = function(req, res) {
                         message: 'No requests information found',
                     });
                 } else {
-                    //console.log(data);
+                    console.log(response.rows[0].id_solicitud);
                     res.status(200).send(data);
                     // res.status(200).send({
                     //     ok: true,
