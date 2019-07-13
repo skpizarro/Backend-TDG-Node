@@ -5,6 +5,9 @@ const config = require('../config');
 const pool = new Pool({
     connectionString: config.db_uri,
     ssl: true,
+    max: 10,
+    connectionTimeoutMillis: 5000,
+    idleTimeoutMillis: 5000
 });
 
 //'/api/solicitudes', solicitudes.approve
@@ -24,14 +27,14 @@ exports.findAll = function(req, res) {
     console.log(`--->findAll\n-> GET ${req.path}`);
     const queryText = 'SELECT * FROM solicitud_ingreso';
 
-    pool.connect((err) => {
+    pool.connect((err, client, release) => {
         if (err) {
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ success: false, data: err });
         }
-        pool.query(queryText)
+        client.query(queryText)
             .then(response => {
-                //const result = R.values(response.rows);
+                release()
                 const data = response.rows;
                 if (response.rows.length < 1) {
                     res.status(404).send({
@@ -41,10 +44,6 @@ exports.findAll = function(req, res) {
                 } else {
                     console.log(response.rows[0].id_solicitud);
                     res.status(200).send(data);
-                    // res.status(200).send({
-                    //     ok: true,
-                    //     data: response.rows
-                    // });
                 }
             })
             .catch(err => {
@@ -60,13 +59,14 @@ exports.findOne = function(req, res) {
     var idQr = req.params.id;
     var queryText = 'SELECT * FROM solicitud_ingreso WHERE id_solicitud = $1';
 
-    pool.connect((err) => {
+    pool.connect((err, client, release) => {
         if (err) {
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ success: false, data: err });
         }
-        pool.query(queryText, [idQr])
+        client.query(queryText, [idQr])
             .then(response => {
+                release()
                 if (response.rows.length < 1) {
                     res.status(404).send({
                         status: 'Failed',

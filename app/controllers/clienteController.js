@@ -5,6 +5,9 @@ const plugins = require('../plugins');
 const pool = new Pool({
     connectionString: config.db_uri,
     ssl: true,
+    max: 10,
+    connectionTimeoutMillis: 5000,
+    idleTimeoutMillis: 5000
 });
 
 //get'/api/hello'
@@ -21,13 +24,14 @@ exports.validateRequest = function(req, res) {
     var idQr = req.params.id;
     var queryText = 'SELECT * FROM solicitud_ingreso WHERE id_solicitud = $1';
 
-    pool.connect((err) => {
+    pool.connect((err, client, release) => {
         if (err) {
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ success: false, data: err });
         }
-        pool.query(queryText, [idQr])
+        client.query(queryText, [idQr])
             .then(response => {
+                release()
                 var idUsuario = JSON.stringify(response.rows[0].id_usuario);
                 var nombreUsuario = JSON.stringify(response.rows[0].nombre_usuario);
                 var fechaVisita = JSON.stringify(response.rows[0].fecha_visita);
@@ -67,13 +71,14 @@ exports.createRequest = function(req, res) {
     const queryText = 'INSERT INTO public.solicitud_ingreso(id_solicitud, id_usuario, nombre_usuario, email_usuario, tipo_usuario, fecha_visita, motivo_visita) values($1, $2, $3, $4, $5, $6, $7) returning *';
     const values = [idQr, reqJson.user.cedula, reqJson.user.nombre + ' ' + reqJson.user.apellido, reqJson.user.email, reqJson.user.tipoPersona, reqJson.user.fecha, reqJson.user.motivoVisita];
 
-    pool.connect((err) => {
+    pool.connect((err, client, release) => {
         if (err) {
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ success: false, data: err });
         }
-        pool.query(queryText, values)
+        client.query(queryText, values)
             .then(response => {
+                release()
                 plugins.qr.qr_generate.generateQR(idQr, reqJson);
                 plugins.mail.mail_send.sendTheMail(idQr, reqJson);
                 console.log('insertado');
