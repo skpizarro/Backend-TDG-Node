@@ -74,8 +74,8 @@ exports.createRequest = function(req, res) {
         }
         pool.query(queryText, values)
             .then(response => {
-                //plugins.qr.qr_generate.generateQR(idQr, reqJson);
-                //plugins.mail.mail_send.sendTheMail(idQr, reqJson);
+                plugins.qr.qr_generate.generateQR(idQr, reqJson);
+                plugins.mail.mail_send.sendTheMail(idQr, reqJson);
                 console.log('insertado');
                 return res.status(201).send({
                     ok: true,
