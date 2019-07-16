@@ -11,6 +11,9 @@ var clienteController = require('../controllers/clienteController');
 
 router.get('/api/hello', clienteController.helloApi);
 
+//login
+router.post('/api/login', clienteController.loginAdmin);
+
 router.get('/api/validateqr/:id', clienteController.validateRequest);
 
 router.post('/api/generateqr', clienteController.createRequest);

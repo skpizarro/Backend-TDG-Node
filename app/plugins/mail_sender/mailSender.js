@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 
 function sendTheMail(idQr, jsonEntrada) {
 
-    console.log(`->Enviando el email ->For ${jsonEntrada.user.email} ->From ${config.mail_user}`);
+    console.log(`-> Enviando el email -> For ${jsonEntrada.user.email} -> From ${config.mail_user}`);
 
     let subjectTo = `QR Access - ${jsonEntrada.user.nombre} - id: ${idQr}`; //
 
@@ -33,7 +33,7 @@ function sendTheMail(idQr, jsonEntrada) {
             if (error) {
                 console.log("Error mail sending !", error);
             } else {
-                console.log('-Email sent:' + info.response);
+                console.log('-Email sent:' + info.response + '-');
             }
         });
     } catch (e) {
