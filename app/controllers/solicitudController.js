@@ -11,19 +11,7 @@ const pool = new Pool({
     idleTimeoutMillis: 10000
 });
 
-//'/api/solicitudes', solicitudes.approve[idQr]
-//en body, data del usuario
-exports.approve = function(req, res) {
-    console.log(`\n-> POST (approve) ${req.protocol}://${req.headers.host}${req.originalUrl} `);
-    var reqJson = req.body;
-    //idQr (si body.data no buscar bd, insert-delete) || buscar registro en BD sol_ing => data
-    //insertar registro BD sol_aprb
-    //eliminar registro BD sol_ing
-    //enviar email w[idQr.image]
-    //plugins.mail.mail_send.sendTheMail(idQr, reqJson);
-    res.send("post Aprobar: \n");
-};
-
+ 
 //'/api/solicitudes', solicitudes.findAll
 exports.findAll = function(req, res) {
     console.log(`\n-> GET---> findAll ${req.protocol}://${req.headers.host}${req.originalUrl} `); //${req.path} * ${req.originalUrl}
@@ -140,7 +128,7 @@ exports.delete = function(req, res) {
     pool.connect((err, client, release) => {
         if (err) {
             console.log(`error conectando db, path: ${req.path} ` + err);
-            return res.status(500).json({ success: false, data: err });
+            return res.status(500).json({ ok: false, data: err });
         }
         client.query(queryText, [idQr])
             .then(response => {

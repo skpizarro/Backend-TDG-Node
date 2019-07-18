@@ -13,7 +13,7 @@ function sendTheMail(idQr, jsonEntrada) {
 
     console.log(`-> Enviando el email -> For ${jsonEntrada.user.email} -> From ${config.mail_user}`);
 
-    let subjectTo = `QR Access - ${jsonEntrada.user.nombre} - id: ${idQr}`; //
+    let subjectTo = `QR Access - ${jsonEntrada.user.nombre} - id: ${idQr}`;
 
     var mailOptions = {
         from: '"👻 Poli Access" <access.control.poli@gmail.com>',

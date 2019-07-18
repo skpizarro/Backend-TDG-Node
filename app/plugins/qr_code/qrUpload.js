@@ -29,7 +29,7 @@ const uploadQR = function(fileName, qrResult) {
         if (err) {
             console.log(`Error uploading QR: ${err}`);
         }
-        console.log('-QR uploaded- ' + qrResult);
+        console.log('-QR uploaded- ' + JSON.stringify(qrResult));
     });
 }
 

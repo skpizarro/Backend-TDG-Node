@@ -10,51 +10,6 @@ const pool = new Pool({
     idleTimeoutMillis: 10000
 });
 
-//get'/api/hello'
-exports.helloApi = function(req, res) {
-    console.log(`\n-> GET --> hello ${req.protocol}://${req.headers.host}${req.originalUrl} `);
-    res.send({ express: `ayuda:-> ${config.mail_user}` });
-};
-
-//post('/api/login'
-exports.loginAdmin = function(req, res) {
-    console.log(`\n-> POST --> login ${req.protocol}://${req.headers.host}${req.originalUrl} `);
-    var reqJson = req.body;
-    // var data = JSON.stringify(reqJson)
-    // reqJson.usuario.nombre
-    // reqJson.usuario.password
-    // si este usuario y clave existen en bd_admin => ok? true : false
-    var queryText = 'SELECT * FROM usuario_admin WHERE identificacion = $1';
-
-    pool.connect((err, client, release) => {
-        if (err) {
-            console.log(`error conectando db, path: ${req.path} ` + err);
-            return res.status(500).json({ success: false, data: err });
-        }
-        client.query(queryText, [idQr])
-            .then(response => {
-                release()
-                if (response.rows.length < 1) {
-                    console.log('Error (404) NO PASS ' + idUsuario);
-                    res.status(404).send({
-                        status: 'Failed',
-                        message: 'No requests information found',
-                    });
-                } else {
-                    console.log('Success (200) ADMIN PASS ' + idUsuario);
-                    res.status(200).send({
-                        ok: true,
-                        data: response.rows
-                    });
-                }
-            })
-            .catch(err => {
-                return res.status(400).json({ success: false, data: 'error en query ' + queryText + ' -> ' + err });
-            });
-    });
-    res.send('hello admin:');
-};
-
 //get'/api/validateqr/:id'
 exports.validateRequest = function(req, res) {
     console.log(`\n-> GET ---> validateOne ${req.protocol}://${req.headers.host}${req.originalUrl} `);
@@ -120,7 +75,7 @@ exports.createRequest = function(req, res) {
             .then(response => {
                 release()
                 plugins.qr.qr_generate.generateQR(idQr, reqJson);
-                plugins.mail.mail_send.sendTheMail(idQr, reqJson);
+                //plugins.mail.mail_send.sendTheMail(idQr, reqJson);
                 console.log(`Success (201) Inserted ${idQr} * ${reqJson.user.nombre}`);
                 return res.status(201).send({
                     ok: true,

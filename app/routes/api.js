@@ -2,17 +2,18 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+ 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use(cors());
 
 var clienteController = require('../controllers/clienteController');
+var homeController = require('../controllers/homeController');
 
-router.get('/api/hello', clienteController.helloApi);
-
+//home
+router.get('/api/hello', homeController.helloApi);
 //login
-router.post('/api/login', clienteController.loginAdmin);
+router.post('/api/login', homeController.loginAdmin);
 
 router.get('/api/validateqr/:id', clienteController.validateRequest);
 

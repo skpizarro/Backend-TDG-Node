@@ -2,15 +2,13 @@ const express = require('express');
 const router = express.Router();
 var bodyParser = require('body-parser');
 const cors = require('cors');
-
+ 
 router.use(bodyParser.json());
 router.use(cors());
 
 var solicitudes = require('../controllers/solicitudController');
 
-// Aprobar solicitud ... que recibo en REQ[idQR?]
-// [idQR]=>(almacenar.data.bd)(enviar.email.usr) 
-router.post('/api/solicitudes', solicitudes.approve);
+//create => generateQR
 
 //Retrieve all solicitudes
 // enviar datos de todas las solicitudes al front...
