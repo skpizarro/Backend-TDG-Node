@@ -1,5 +1,4 @@
 const Pool = require('pg').Pool;
-var url = require('url');
 const config = require('../config');
 const plugins = require('../plugins');
 

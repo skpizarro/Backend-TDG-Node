@@ -15,7 +15,7 @@ exports.validateRequest = function(req, res) {
     console.log(`\n-> GET ---> validateOne ${req.protocol}://${req.headers.host}${req.originalUrl} `);
 
     var idQr = req.params.id;
-    var queryText = 'SELECT * FROM solicitud_ingreso WHERE id_solicitud = $1';
+    var queryText = 'SELECT * FROM solicitud_aprobada WHERE id_aprobada = $1';
 
     pool.connect((err, client, release) => {
         if (err) {
@@ -35,13 +35,13 @@ exports.validateRequest = function(req, res) {
                 console.log(`**data \n*id: ${idUsuario} *name: ${nombreUsuario} *in_date: ${fechaVisita} *curr_date: ${fechaActual} *rowCount: ${response.rowCount}`);
 
                 if (response.rowCount < 1 || fechaActual !== fechaVisita) {
-                    console.log('Error (404) USER NO PASS ' + idUsuario);
+                    console.log('Error (404) USER NO ADMITED ' + nombreUsuario);
                     res.status(404).send({
                         ok: false,
                         message: 'No requests information found or Date error: ' + fechaVisita + ' T: ' + fechaActual,
                     });
                 } else {
-                    console.log('Success (200) USER PASS ' + nombreUsuario);
+                    console.log('Success (200) USER ADMITED ' + nombreUsuario);
                     res.status(200).send({
                         ok: true,
                         data: response.rows
@@ -75,7 +75,6 @@ exports.createRequest = function(req, res) {
             .then(response => {
                 release()
                 plugins.qr.qr_generate.generateQR(idQr, reqJson);
-                //plugins.mail.mail_send.sendTheMail(idQr, reqJson);
                 console.log(`Success (201) Inserted ${idQr} * ${reqJson.user.nombre}`);
                 return res.status(201).send({
                     ok: true,
@@ -87,5 +86,4 @@ exports.createRequest = function(req, res) {
                 return res.status(400).send({ ok: false, data: err });
             });
     });
-
 };
