@@ -1,20 +1,27 @@
 const Pool = require('pg').Pool;
 const config = require('../config');
 
-const pool = new Pool({
-    connectionString: config.db_uri,
-    ssl: true,
-    max: 10,
-    connectionTimeoutMillis: 10000,
-    idleTimeoutMillis: 10000
-});
+// const pool = new Pool({
+//     connectionString: config.db_uri,
+//     ssl: true,
+//     max: 10,
+//     connectionTimeoutMillis: 10000,
+//     idleTimeoutMillis: 10000
+// });
+
+const confDb = {
+    connectionString: 'postgressql://postgres:superuser@localhost:5432/protocolo_zonas_granja'
+}
+
+
+const pool = new Pool(confDb);
  
 //post('/admin/crud', adminController.create);
 exports.create = function (req, res) {
     console.log(`\n-> POST (create) ${req.protocol}://${req.headers.host}${req.originalUrl} `);
     var reqJson = req.body;
 
-    const queryText = 'INSERT INTO public.usuario_admin(id_usuario, nombre_usuario, clave_usuario) values($1, $2, $3) returning *';
+    const queryText = 'INSERT INTO administrador(id_administrador, nombre_administrador, clave_administrador) values($1, $2, $3) returning *';
     const values = [reqJson.user.idUsuario,
         reqJson.user.nombresUsuario,
         reqJson.user.passwordUsuario];
@@ -43,7 +50,7 @@ exports.create = function (req, res) {
 //get('/admin/crud', adminController.findAll);
 exports.findAll = function (req, res) {
     console.log(`\n-> GET---> findAll ${req.protocol}://${req.headers.host}${req.originalUrl} `);
-    const queryText = 'SELECT * FROM usuario_admin';
+    const queryText = 'SELECT * FROM administrador';
 
     pool.connect((err, client, release) => {
         if (err) {
@@ -119,7 +126,7 @@ exports.update = function (req, res) {
 //delete('/admin/crud/:id', adminController.delete); 
 exports.delete = function (req, res) {
     var idAdm = req.params.id;
-    var queryText = 'DELETE FROM usuario_admin WHERE id_usuario = $1 returning *';
+    var queryText = 'DELETE FROM administrador WHERE id_administrador = $1 returning *';
     console.log(`\n-> DEL ---> delete: ${idAdm} :: ${req.protocol}://${req.headers.host}${req.originalUrl} `);
 
     pool.connect((err, client, release) => {

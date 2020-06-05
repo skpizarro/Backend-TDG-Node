@@ -1,30 +1,82 @@
 const Pool = require('pg').Pool;
 var url = require('url');
 const config = require('../config');
-//const plugins = require('../plugins');
+const plugins = require('../plugins')
+const protocolo = require('./protocoloSolicitud');
 
-const pool = new Pool({
-    connectionString: config.db_uri,
-    ssl: true,
-    max: 10,
-    connectionTimeoutMillis: 10000,
-    idleTimeoutMillis: 10000
-});
+// const pool = new Pool({
+//     connectionString: config.db_uri,
+//     ssl: true,
+//     max: 10,
+//     connectionTimeoutMillis: 10000,
+//     idleTimeoutMillis: 10000
+// });
 
+const confDb = {
+    connectionString: 'postgressql://postgres:superuser@localhost:5432/protocolo_zonas_granja'
+}
+
+const pool = new Pool(confDb);
  
+exports.getZonas =function(req,res){
+    console.log(`\n-> GET---> getZonas ${req.protocol}://${req.headers.host}${req.originalUrl} `);
+    const queryText = "SELECT * FROM zona";
+    pool.connect((err,client)=>{
+        if (err) {
+            console.log(`error conectando db, path: ${req.path} ` + err);
+            return res.status(500).json({ ok: false, data: err });
+        }
+
+        client.query(queryText)
+            .then(response => {
+                client.release();
+                if (response.rowCount < 1) {
+                    console.log('Error (404) Not foundinformation ');
+                    res.status(404).send({
+                        ok: false,
+                        message: 'No requests information found',
+                    });
+                } else {
+                    console.log('Success (200) rows: ' + response.rowCount);
+                    res.status(200).send({
+                        ok: true,
+                        data: response.rows
+                    });
+                }
+            })
+            .catch(err => {
+                return res.status(400).json({ ok: false, data: 'error en query ' + queryText + ' -> ' + err });
+            });
+    })
+}
+
 //'/api/solicitudes', solicitudes.findAll
 exports.findAll = function(req, res) {
-    console.log(`\n-> GET---> findAll ${req.protocol}://${req.headers.host}${req.originalUrl} `); //${req.path} * ${req.originalUrl}
-    const queryText = 'SELECT * FROM solicitud_ingreso';
-
-    pool.connect((err, client, release) => {
+    console.log(`\n-> GET---> findAll ${req.protocol}://${req.headers.host}${req.originalUrl} `);
+    //Consultamos todas la solicitudes que estan pendientes
+    const queryText = `
+                        SELECT
+                        si.id_solicitud,
+                        si.id_usuario,
+                        si.motivo_Visita,
+                        si.fecha_visita,
+                        u.nombre_usuario,
+                        u.apellido_usuario,
+                        u.email_usuario,
+                        tu.tipo_usuario
+                        FROM solicitud_ingreso AS si 
+                        JOIN usuario AS u ON si.id_usuario = u.id_usuario
+                        JOIN tipo_usuario AS tu ON u.id_tipo_usuario = tu.id_tipo_usuario
+                        WHERE si.estado = 'Pendiente'
+                    `
+    pool.connect((err, client) => {
         if (err) {
             console.log(`error conectando db, path: ${req.path} ` + err);
             return res.status(500).json({ ok: false, data: err });
         }
         client.query(queryText)
             .then(response => {
-                release()
+                client.release();
                 if (response.rowCount < 1) {
                     console.log('Error (404) Not foundinformation ');
                     res.status(404).send({
@@ -59,6 +111,7 @@ exports.findOne = function(req, res) {
         }
         client.query(queryText, [idQr])
             .then(response => {
+                client.release();
                 release()
                 if (response.rowCount < 1) {
                     console.log('Error (404) Not found id: ' + idQr);
@@ -87,83 +140,87 @@ exports.update = function(req, res) {
     var idQr = req.params.id;
     var queryText = 'UPDATE solicitud_ingreso SET xxx = $1, yyyy = $2 WHERE id_solicitud = $3';
 
-    /** 
-     const id = parseInt(request.params.id)
-     const { name, email } = request.body
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-    [name, email, id]
+};
+
+
+
+
+//Denegar completamente la entrada a cada una de las zonas
+//'/api/solicitudes/
+exports.deny = async(req, res) =>{
+    try{
+        const reqJson = req.body.dataUser;
+        const {id_solicitud,zonasSolicitadas,fecha_visita,authAdmin} = reqJson;
+        
+        //Creamos un array con todas las zonas y una propiedad permiso con valor denegado para todas
+        const deniZones = zonasSolicitadas.map(({id_zona,nombre_zona})=>{return {id_zona,nombre_zona,permiso:'Denied'} });
+        //var idQr = req.params.id;
+        //Se rechaza la solicitud
+        const response = await protocolo.updateSolicitudState('Rejected',id_solicitud,authAdmin,pool)
+        // se actualiza la confirmacion de la zona para la fecha de visita liberando los cupos en las zonas
+        await protocolo.updateReleaseConfirm(fecha_visita,deniZones,pool,true);
+        
+        //console.log("REspuesta ",response)
+
+        //creamos un vector respuesta para enviar al front con lo objetos resultantes
+        const respuesta =[];
+        if(response){
+            // Denegamos la entrada a cada una de las zonas, de la solicitud Rechazada
+            
+            console.log(`\n-> DENY ---> deny: ${id_solicitud} :: ${req.protocol}://${req.headers.host}${req.originalUrl} `);
+            
+            const client = await pool.connect();
+               await zonasSolicitadas.forEach(async({id_zona},index) => {
+                    try{
+                        const queryText = "INSERT into det_sol_zona (id_solicitud,id_zona,permiso) VALUES($1,$2,'Denied') returning *";
+                        const val =[id_solicitud,id_zona]
+                        const resp = await client.query(queryText,val);
+                        
+                        if (resp.rowCount < 1) {
+                            console.log(`Error (404) Not deny request id:  ${id_solicitud} zone : ${id_zona}`);
+                            respuesta.push({
+                                ok: false,
+                                message: `Cann´t deny request with id: ${id_solicitud} zone : ${id_zona}`,
+                            })
+                            
+                        } else {
+                            console.log(`Success (200) request deny id: ${id_solicitud} zone: ${id_zona}`);
+                            
+                            respuesta.push({
+                                ok: true,
+                                alert: `Request deny id: ${id_solicitud} zone ${id_zona}`,
+                                data: resp.rows
+                            })
+                        }
+                        
+                        if(index == zonasSolicitadas.length - 1){
+                            //enviamos correo al usuario informado sobre el rechazo de la solicitud
+                            plugins.mail.mail_send.sendTheMail(null, reqJson, "Rejected",null);
+                            return res.status(200).json({
+                                respuesta:respuesta
+                            })
+                        }
+                    }catch(e){
+                        console.log("Error ",e)
+                        return res.status(400).json(
+                            { ok:false, data: 'error en query '}
+                            
+                        );
+
+                    }
+                    
+                })
+                client.release();
+                
+                
+        }else{
+            return res.status(400).json({ ok:false, data: 'error en query '});
+        }
+        
+
+    }catch(err){
+        return res.status(400).json({ ok: false, data: 'error en query  -> ' + err });
+    }
     
-    pool.connect((err, client, release) => {
-        if (err) {
-            console.log(`error conectando db, path: ${req.path} ` + err);
-            return res.status(500).json({ success: false, data: err });
-        }
-        client.query(queryText, [x, y, idQr])
-        .then(response => {
-            if (response.rowCount < 1) {
-                    res.status(404).send({
-                        ok: false,
-                        message: 'Cann´t update item with id: ' + idQr,
-                    });
-                } else {
-                    res.status(200).send({
-                        ok: true,
-                        alert: 'Item updated id: ' + idQr,
-                        data: response.rows
-                    });
-                }
-            })
-            .catch(err => {
-                return res.status(400).json({ ok: false, data: 'error en query ' + queryText + ' -> ' + err });
-            });
-        });*/
+    
 };
-
-//'/api/solicitudes/:id', solicitudes.delete
-exports.delete = function(req, res) {
-    var idQr = req.params.id;
-    var queryText = 'DELETE FROM solicitud_ingreso WHERE id_solicitud = $1 returning *';
-    console.log(`\n-> DEL ---> delete: ${idQr} :: ${req.protocol}://${req.headers.host}${req.originalUrl} `);
-
-    pool.connect((err, client, release) => {
-        if (err) {
-            console.log(`error conectando db, path: ${req.path} ` + err);
-            return res.status(500).json({ ok: false, data: err });
-        }
-        client.query(queryText, [idQr])
-            .then(response => {
-                release()
-                if (response.rowCount < 1) {
-                    console.log('Error (404) Not deleted id: ' + idQr);
-                    res.status(404).send({
-                        ok: false,
-                        message: 'Cann´t delete item with id: ' + idQr,
-                    });
-                } else {
-                    console.log('Success (200) Item deleted id: ' + idQr);
-                    res.status(200).send({
-                        ok: true,
-                        alert: 'Item deleted id: ' + idQr,
-                        data: response.rows
-                    });
-                }
-            })
-            .catch(err => {
-                return res.status(400).json({ ok: false, data: 'error en query ' + queryText + ' -> ' + err });
-            });
-    });
-};
-
-// const fields = response.fields.map(field => field.name);
-// console.log(fields);
-
-// var resultt = new Array;
-// data.forEach(row => {
-//     resultt.push(`Id: ${row.id_solicitud}       Name: ${row.nombre_usuario}`);
-// }
-/*
-Route path: /users/:userId/books/:bookId
-Request URL: http://localhost:3000/users/34/books/8989
-req.params: { "userId": "34", "bookId": "8989" } 
-console.log(JSON.stringify({ x: 5, y: 6 })); str->JSON
-*/

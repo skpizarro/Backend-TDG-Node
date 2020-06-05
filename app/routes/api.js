@@ -14,10 +14,17 @@ var homeController = require('../controllers/homeController');
 router.get('/api/hello', homeController.helloApi);
 //login
 router.post('/api/login', homeController.loginAdmin);
+//formulario // se carga el tipo de usuarios
+router.get('/api/Formulario',homeController.formulario);
 
-router.get('/api/validateqr/:id', clienteController.validateRequest);
+//Formulario/Fecha   // se carga las zonas segun disponibilidad por fecha
+router.get('/api/Formulario/Fecha',homeController.zonasxFechaForm);
 
-router.post('/api/generateqr', clienteController.createRequest);
+// Se valida la informacion del qr segun la zona en la que se solicite.
+router.post('/api/validateqr', clienteController.validateRequest);
+
+
+router.post('/api/SolicitudIngreso',clienteController.createRequest);
 
 module.exports = router;
 /**

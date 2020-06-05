@@ -2,6 +2,8 @@
 
 const bodyParser = require('body-parser');
 const express = require('express');
+const http = require('http'); // nos permite levantar el servidor, socketio no se trabaja directo con express, express esta basado en http
+
 //const path = require("path");
 
 class Server {
@@ -9,25 +11,19 @@ class Server {
     constructor(puerto) {
         this.port = puerto;
         this.app = express();
+        //Definimos el servidor donde corremos la aplicacion
+        this.server = http.createServer(this.app)
     }
 
-    // publicFolder() {
-    //     if (process.env.NODE_ENV === 'production') {
-    //         var publicPath2 = path.join(process.cwd(), './public');
-    //     } else {
-    //         var publicPath2 = path.join(process.cwd(), '../public');
-    //     }
-    //     this.app.use('/static', express.static(publicPath2))
-    //     console.log(`>>public path >>>${publicPath2}`);
-    // }
 
     static init(puerto) {
         return new Server(puerto);
     }
+    
+    
 
     start(callback) {
-        this.app.listen(this.port, callback());
-        //this.publicFolder();
+        this.server.listen(this.port, callback());// no se usa app
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json);
     }

@@ -1,9 +1,14 @@
-const generateIdQR = (jsonD) => {
-    let fechastr = new Date().toISOString().replace('-', '').replace('.', '').replace('T', '').replace('Z', '').replace('-', '').replace(':', '').replace(':', '').slice(4, -3);
-    let correo_split = jsonD.user.email.split('@')[0].slice();
-    let idQr = correo_split + fechastr;
+const generateIdQR = (data) => {
+    const {id_solicitud,fecha_visita} = data;
+    let idQr = `${id_solicitud.toString()}/${fecha_visita}`;
     return idQr;
-    //emailmmddhhmmss
+    //idsolicitud/aaaa-mm-dd
+}
+
+const generateSpecialIdQR = (data) =>{
+    const {id_solicitud} = data;
+    let idQr = `${id_solicitud.toString()}/SpecialPermission`;
+    return idQr;
 }
 
 const generateCleanDate = () => {
@@ -27,6 +32,7 @@ const cleanDate = (fecha) => {
 
 module.exports = {
     generateIdQR,
+    generateSpecialIdQR,
     generateCleanDate,
     generateCleanDateOnly,
     cleanDate

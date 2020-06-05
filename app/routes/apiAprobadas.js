@@ -10,9 +10,14 @@ var aprobadas = require('../controllers/aprobadaController');
 
 //create => approve
 
-// Aprobar solicitud ... que recibo en REQ[idQR?]
-// [idQR]=>(almacenar.data.bd)(enviar.email.usr) 
-router.post('/api/adm/approve', aprobadas.approve);
+// Aprobar solicitud -> generar codigo qr -> enviar codigo
+router.put('/api/adm/approve', aprobadas.approve);
+
+//Aprobar solicitud con permiso especial
+router.put('/api/adm/SpecialPermission', aprobadas.specialPermission);
+
+//Cancelar permisos de la solicitud una vez fueron aprobados
+router.put('/api/adm/Cancel', aprobadas.cancel);
 
 //Retrieve all solicitudes
 // enviar datos de todas las solicitudes al front...

@@ -10,6 +10,9 @@ var solicitudes = require('../controllers/solicitudController');
 
 //create => generateQR
 
+//Antes de enviar los datos con las solicitudes debemos enviar todas las zonas para luego comparar con las solicitadas
+router.get('/api/Zonas',solicitudes.getZonas);
+
 //Retrieve all solicitudes
 // enviar datos de todas las solicitudes al front...
 router.get('/api/solicitudes', solicitudes.findAll);
@@ -21,8 +24,7 @@ router.get('/api/solicitudes/:id', solicitudes.findOne);
 // Update a solicitud with [Id]
 router.put('/api/solicitudes/:id', solicitudes.update);
 
-// Delete a solicitud with [Id]
-// true or false
-router.delete('/api/solicitudes/:id', solicitudes.delete);
+//Rechazar una solicitud
+router.put('/api/solicitudes', solicitudes.deny);
 
 module.exports = router;
