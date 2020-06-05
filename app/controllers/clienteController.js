@@ -6,15 +6,13 @@ const Protocolo= require('./protocoloSolicitud');
 const socket = require('./../plugins/socketio/socket');
 
 
-const confDb = {
-    connectionString: 'postgressql://postgres:superuser@localhost:5432/protocolo_zonas_granja'
-}
-
-
-
-const pool = new Pool(confDb);
-
-
+const pool = new Pool({
+    connectionString: config.db_uri,
+    ssl: true,
+    max: 10,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 10000
+});
 
 //post'/api/validateqr'
 exports.validateRequest = async (req, res) =>{

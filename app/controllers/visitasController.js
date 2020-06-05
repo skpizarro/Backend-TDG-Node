@@ -2,11 +2,13 @@ const Pool = require('pg').Pool;
 const config = require('../config');
 const socket = require('../plugins/socketio/socket')
 
-const confDb = {
-    connectionString: 'postgressql://postgres:superuser@localhost:5432/protocolo_zonas_granja'
-}
-
-const pool = new Pool(confDb);
+const pool = new Pool({
+    connectionString: config.db_uri,
+    ssl: true,
+    max: 10,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 10000
+});
 
 
 //GET: /api/Visitas/:zona

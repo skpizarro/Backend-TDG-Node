@@ -1,21 +1,15 @@
 const Pool = require('pg').Pool;
 const config = require('../config');
 
-// const pool = new Pool({
-//     connectionString: config.db_uri,
-//     ssl: true,
-//     max: 10,
-//     connectionTimeoutMillis: 10000,
-//     idleTimeoutMillis: 10000
-// });
-
-const confDb = {
-    connectionString: 'postgressql://postgres:superuser@localhost:5432/protocolo_zonas_granja'
-}
+const pool = new Pool({
+    connectionString: config.db_uri,
+    ssl: true,
+    max: 10,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 10000
+});
 
 
-const pool = new Pool(confDb);
- 
 //post('/admin/crud', adminController.create);
 exports.create = function (req, res) {
     console.log(`\n-> POST (create) ${req.protocol}://${req.headers.host}${req.originalUrl} `);

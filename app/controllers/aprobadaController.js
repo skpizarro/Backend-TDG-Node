@@ -3,11 +3,13 @@ const config = require('../config');
 const plugins = require('../plugins');
 const protocolo = require('./protocoloSolicitud');
 
-const confDb = {
-    connectionString: 'postgressql://postgres:superuser@localhost:5432/protocolo_zonas_granja'
-}
-
-const pool = new Pool(confDb);
+const pool = new Pool({
+    connectionString: config.db_uri,
+    ssl: true,
+    max: 10,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 10000
+});
 
 
 //put('/api/adm/approve', aprobadas.approve) 
